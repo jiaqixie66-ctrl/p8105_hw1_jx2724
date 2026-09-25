@@ -1,0 +1,91 @@
+---
+title: "Hw 1"
+author: "Jiaqi Xie"
+date: "2026-09-25"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+
+data("penguins", package = "palmerpenguins")
+```
+
+
+## Problem 1
+
+The `penguins` dataset contains information on penguins from three species:
+Adelie, Chinstrap, and Gentoo. Important variables include species, island,
+bill length, bill depth, flipper length, body mass, sex, and year.
+
+The dataset contains `r nrow(penguins)` observations and `r ncol(penguins)` variables.
+
+
+The mean flipper length is `r round(mean(penguins$flipper_length_mm, na.rm = TRUE), 2)` mm.
+
+
+```{r}
+penguin_plot =
+  ggplot(
+    penguins,
+    aes(
+      x = bill_length_mm,
+      y = flipper_length_mm,
+      color = species
+    )
+  ) +
+  geom_point()
+
+penguin_plot
+```
+```{r}
+ggsave("penguin_scatterplot.pdf", penguin_plot)
+```
+
+
+## Problem 2
+
+```{r, warning = FALSE}
+normal_sample = rnorm(10)
+
+sample_df =
+  tibble(
+    normal_sample = normal_sample,
+    positive = normal_sample > 0,
+    character_var = letters[1:10],
+    factor_var = factor(
+      c(
+        "low", "medium", "high", "low", "medium",
+        "high", "low", "medium", "high", "low"
+      )
+    )
+  )
+```
+
+```
+  {r, warning = FALSE}
+mean(pull(sample_df, normal_sample))
+mean(pull(sample_df, positive))
+mean(pull(sample_df, character_var))
+mean(pull(sample_df, factor_var))
+```
+
+The mean can be calculated for the numeric and logical variables, but not
+for the character or factor variables. For the logical variable, R treats
+TRUE as 1 and FALSE as 0, so the mean represents the proportion of TRUE
+values.
+
+```{r, results = "hide", warning = FALSE}
+as.numeric(pull(sample_df, positive))
+as.numeric(pull(sample_df, character_var))
+as.numeric(pull(sample_df, factor_var))
+```
+
+
+
+
+
+
+
